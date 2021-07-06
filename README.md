@@ -13,7 +13,7 @@ Take your Python skills to the next level with this intermediate Python course.
 - Itertools
 - Lambda Functions
 - Exceptions and Errors
-- Logging
+- Logging [Use python-json-logger package](https://github.com/madzak/python-json-logger)
 - JSON
 - Random Numbers
 - Decorators
