@@ -1,0 +1,8 @@
+GIL: Global interpreter lock
+- A lock allows only one thread at a time to execute in Python
+- Needed in CPython becasue memory management is not thread-safe
+
+- Avoid
+    * Use multiprocessing
+    * Use a different, free-threaded Python inplementation (Jython, IronPython)
+    * Use python as a wrapper for third-party libraries (C/C++) -> numpy, scipy
