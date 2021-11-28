@@ -1,3 +1,5 @@
+# Deep dive in Python masterclass
+This is a course for python 3.6 (or higher)
 ## Variable Names
 ### Must
 - Start with underscore (_) or letter (a-z, A-Z)
@@ -66,7 +68,7 @@ for i, c in enumerate(s):
   print(i, c)
 ```
 
-### Classes
+## Classes
 - Getter and setter should be implemented just when we have extra loggic for some property
 - Follow an example of a basic class
 ``` python
