@@ -47,7 +47,7 @@ else:
   print("Code executed without a zero division error')
 ```
 
-### The foor loop
+## The foor loop
 - In python, an iterable is an object capable of returning values one at a time.
 - If we never hit the `break` else statement will be called in the example below
 - `Try`, `catch` and `finally` will work the same as while loop
