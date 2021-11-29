@@ -113,4 +113,82 @@ class Rectangle:
     else:
       return false    
 ```
+## Variables and Memory
 
+### Variables are memory references
+- `my_var_1 = 10` **references** the object at 0x1000
+- `my_var_2 = 'Hello'` **references** the object at 0x1002
+- In Python, we can find out the memory address referenced by a variable by using the `id()` function
+- This will return a base-10 number, we can convert this base-10 number to hexadecimal, by using the `hex()` function.
+### References Counting
+- Reference counting is made by the **Python Memory Manager**
+- `other_var = my_var`, `other_var` is sharing the reference from `my_var` so *reference count* increase.
+- In order to find the reference count we can use `sys.getrefcount(my_var)`. Passing my_var to getrefcount() creates an extra reference!
+- `ctypes.c_long.from_address(address).value` does not increase the reference count.
+### Garbage Collector
+- It is useful when references counting does not free memory. It usually happens when we have a **circular dependency**
+- Can be controlled programmatically using the `gc` module, by default it is *turned on*.
+- You may turn it **off** if you are **sure** your code does not create circular references - but **beware!!**
+- Runs periodically on its own (if turned on). You can call it manually, and even do you own cleanup.
+- It does NOT work properly for **Python <3.4**
+``` python
+import ctypes
+import gc
+
+def ref_count(address):
+  return ctypes.c_long.from_address(address).value
+def object_by_id(object_id):
+  for obj in gc.get_objects():
+    if id(obj) == object_id:
+      return "Object exists"
+    return "Not found"
+
+class A:
+  def __init__(self):
+    self.b = B(self)
+    print(f"A: self: {id(self)}, b: {id(self.b)}")
+
+class B:
+  def __init__(self, a):
+    self.a = a
+    print(f"B: self: {id(slef)}, a: {id(self.a)}")
+
+# Disable the garbage collector
+gc.disable()
+
+my_var = A()
+
+print('a: \t{0}'.format(hex(id(my_var))))
+print('a.b: \t{0}'.format(hex(id(my_var.b))))
+print('b.a: \t{0}'.format(hex(id(my_var.b.a))))
+
+# refence counting
+print('refcount(a) = {0}'.format(ref_count(a_id)))
+print('refcount(b) = {0}'.format(ref_count(b_id)))
+
+# Check if the objects exists for the garbage collector
+print('a: {0}'.format(object_by_id(a_id)))
+print('b: {0}'.format(object_by_id(b_id)))
+
+my_var = None
+
+# References are for both 1, and reference counting does not free the memory
+print('refcount(a) = {0}'.format(ref_count(a_id)))
+print('refcount(b) = {0}'.format(ref_count(b_id)))
+
+# Garbage collector does not free the memory because was disable
+print('a: {0}'.format(object_by_id(a_id)))
+print('b: {0}'.format(object_by_id(b_id)))
+
+# Garbage collector collect
+gc.collect()
+
+print('refcount(a) = {0}'.format(ref_count(a_id)))
+print('refcount(b) = {0}'.format(ref_count(b_id)))
+print('a: {0}'.format(object_by_id(a_id)))
+print('b: {0}'.format(object_by_id(b_id)))
+
+# Now there is not objects that garbage collector can find
+# And the ref_count will be a no-know number, because that memory was free for the Garbage Collector
+
+``` 
