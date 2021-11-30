@@ -190,5 +190,33 @@ print('b: {0}'.format(object_by_id(b_id)))
 
 # Now there is not objects that garbage collector can find
 # And the ref_count will be a no-know number, because that memory was free for the Garbage Collector
+```
 
-``` 
+### Dynamic vs Static Typing
+- Some languages (Java, C++, Swift) are *statically* typed.  
+- `string myVar = "Hello"` It means we have to specified a **data type** of the variable.
+- We can use the built-in `type()` function to determine the type of the object **currently referenced** by a variable
+``` python
+a = "Hello"
+type(a) # str
+a = 10
+type(a) # int
+a = lambda x: x**2
+type(a) # function
+a = 3 + 4j
+type(a) # complex
+```
+
+### Variable Re-assigment
+
+``` python
+my_var = 10
+hex(id(my_var)) # e.g. '0x53d5eaf0`
+my_var = 15 # reassignment
+hex(id(my_var)) # e.g. '0x53d5eb90'
+my_var = my_var + 1
+hex(id(my_var)) # e.g. '0x53d5ebb0'
+```
+
+- When we reassigned the value of a variable in python, a new object of some type is created (the new value for `my_var`) and the reference of the variable change to that object.
+- In fact, the value inside the objects, can never be change.
