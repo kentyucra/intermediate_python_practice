@@ -220,3 +220,42 @@ hex(id(my_var)) # e.g. '0x53d5ebb0'
 
 - When we reassigned the value of a variable in python, a new object of some type is created (the new value for `my_var`) and the reference of the variable change to that object.
 - In fact, the value inside the objects, can never be change.
+
+### Object Mutability
+- Consider an object in memory. Changing the data inside the object is called modifying the internal state of the object. 
+- **object was mutated:** fancy way to saying the internal data has changed.
+- **Mutable** is an object whose interanl state can be changed.
+- **Inmutable** is an object whose internal state cannot be changed.
+
+#### Inmutable objects in Python
+- Numbers (int, float, booleans, etc)
+- Strings
+- Tuples
+- Frozen sets
+- Inmutable User-Defined Classes
+
+#### Mutable objects in Python
+- Lists
+- Sets
+- Dictionaries
+- Mutable User-Defined Classes
+
+### Shared References and Mutability
+- The term **shared reference** is the concept of two variables referencing to the *same* object in memory (i.e. having the same memory address)
+- **With inmutable objects**, Python's memory manager decides to automatically re-use the memory references!! (It does not happens everytime)
+``` python
+# suprise that id(a) == id(b)
+a = 10
+b = 10
+# the same for another inmutable objects, id(s1) == id(s2)
+s1 = 'hello'
+s2 = 'hello'
+```
+- **With mutable objects**, the python manager will never re-use the memory
+``` python
+# id(a) != id(b)
+a = [1, 2, 3]
+b = [1, 2, 3]
+```
+
+
