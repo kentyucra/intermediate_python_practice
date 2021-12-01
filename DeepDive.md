@@ -258,4 +258,17 @@ a = [1, 2, 3]
 b = [1, 2, 3]
 ```
 
-
+### Variable Equality
+- Equiality of **memory address** (if both variables have the same reference - point to the same memory) Use the `is`/`is not` identity operator. i.e. `var_1 is var_2` (*This equility is not reliable*)
+- Equality of **object state (data)** (if both variables have the same information) Use the `=`/`!=` equality operator. i.e. `var_1 == var_2` 
+### NONE
+- The `None` object can be assigned to variables to indicate that they are not set (in the way we would expect them to be), i.e. an "empty" value (or null pointer)
+- But the `None` object is a real object that is managed by the Python memory manager
+- Furthermore, the memory manager will alway use a shared reference when assigning a variable to None
+``` python
+a = None
+b = None
+c = None
+id(a) == id(b) == id(c) # True
+a is None # True
+```
