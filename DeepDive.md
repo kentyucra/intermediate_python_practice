@@ -346,7 +346,7 @@ str_1 is str_2 # True
 - Numeric calculations (e.g. `24 * 60` --> `1440`)
 - Short sequences length < 20
   - `(1, 2) * 5` --> `(1, 2, 1, 2, 1, 2, 1, 2, 1, 2)`
-  - `'abc' * 3` --> `'abcabcabc'
+  - `'abc' * 3` --> `'abcabcabc'`
   - `'hello' + ' world'` --> `'hello world'`
 #### Membership Tests: Mutables are replaced by inmutables
 - When membership test such as `if e in [1, 2, 3]` are encountered, the `[1, 2, 3]` **constant**, is replaced by its inmutable counterpart `(1, 2, 3)` tuple
