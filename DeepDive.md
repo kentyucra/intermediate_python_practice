@@ -272,3 +272,82 @@ c = None
 id(a) == id(b) == id(c) # True
 a is None # True
 ```
+
+### Everything is an object
+- Throughout this course, we will encounter many data types: integers (`int`), booleans (`bool`), floats (`float`), strings (`str`), lists (`list`), tuples (`tuple`), set (`set`), dictionaries (`dict`), None (`NoneType`)
+- We will also see other constructs: operators (`+`, `-`, `==`, `is`, `...`), functions, classes, types
+- But the one thing in common with all these things, is that they are all **objects** (instances of classes):
+  - `function`s are instances of the class Function
+  - `class`es are instances of the class Class
+  - `type`s are instances of the Classes Int, Float, String, ...
+- This means they all have a *memory address*!! As a consequence:
+  - Any object can be **assigned** to a variable ... **including functions**
+  - Any object can be **passed** to a function ... **including functions**
+  - Any object can be **returned** from a function ... **including functions** 
+``` python
+def my_func():
+  print(I am an object from the python class Function)
+```
+- `my_func` is the name of the function
+- `my_func()` invokes the function
+- **`help(int)` will tell you the documentation of the class `int`**
+
+### Python Optimization: `Int` Interning
+- A lot of what we discuss with memory managements, garbage collection and optimizations, is usually specific to the Python implementation you use.
+- This notes are using CPython, the standard (or reference) Python implementation (written in C)
+- But there are other Python implementations out there. These include:
+  - **Jython** - written in Java and can import and use any Java class - in fact it even compiles to Java bytecode which can then run in a JVM
+  - **IronPython** - this one is written in C# and targets .Net (and mono) CLR
+  - **PyPy** - This one is written in RPython (which is itself a statically-typed subset of Python written in C that is specifically designed to write interpreters)
+  - Many more -> https://wiki.python.org/main/PythonImplementations
+#### Looks the code below, what is going on????
+``` python
+a = 10
+b = 10
+id(10) == id(10) # True
+a = 500
+b = 500
+id(a) == id(b) # False
+```
+- Interning: reusing objects on-demand. At startup, Python (CPython), pre-loads (caches) a global list of integers in the range `[-5, 256]` 
+- Any time an integer is referenced in that range, Python will use the cached version of that object.
+- **Singletons** Optimization strategy - small integers show up often
+- When we write `a = 10` Python just has to point to the existing reference for 10
+- But if we write `a = 257` Python does not use that global list and a new object is created every time
+
+### Python Optimization: `String` Interning
+- Some strings are also automatically **interned** - but not all!!
+- As the python code is compiled, **identifiers** are interned: variable names, function names, class names, etc
+- Some string literals may also be automatically interned
+  - String literals that look like identifiers (e.g. `'hello_world'`)
+  - Although if it starts with a digit, even though that is not a valid identifier, it may still get interned, **but do NOT count on it**
+#### Why do this?
+- It's all about (speed and, possibly, memory) optimization.
+- Python, both internally, and in the code you write, deals with lots and lost of dictionary type lookups, on string keys, which means a lot of **string equality** testing.
+- Let's say we want to see if two (longs) string are equal `str_1 == str_2`, we need to compare the two strings **character by character**
+- But if we know that `srt1` has been interned, then srt1 and str2 are the same string if they both point to the same memory address
+- In which case we can use `str1 is str2` instead - which compares two integers (memory address)
+- Not all strings are automatically internted by Python, but you can **force** strings to be interned by using the `sys.intern()` method.
+``` python
+import sys
+str_1 = sys.intern('the quick brown fox')
+str_2 = sys.intern('the quick brown fox')
+str_1 is str_2 # True
+```
+- This is much faster than `str_1 == str_2`
+- When should you do this?
+  - Dealing with a large number of strings that could have high repetition e.g. tokenizing a large corpus of text (NLP)
+  - Lots of string comparisons.
+- **In general though, you do not need to intern strings yourself. Only do this if you really need to.**
+
+### Python Optimization: Peephole
+- This is another variety of optimizations that can occur at compile time
+#### Constant expressions
+- Numeric calculations (e.g. `24 * 60` --> `1440`)
+- Short sequences length < 20
+  - `(1, 2) * 5` --> `(1, 2, 1, 2, 1, 2, 1, 2, 1, 2)`
+  - `'abc' * 3` --> `'abcabcabc'
+  - `'hello' + ' world'` --> `'hello world'`
+#### Membership Tests: Mutables are replaced by inmutables
+- When membership test such as `if e in [1, 2, 3]` are encountered, the `[1, 2, 3]` **constant**, is replaced by its inmutable counterpart `(1, 2, 3)` tuple
+- List are changed by tuples, and sets are changed by frozensets
