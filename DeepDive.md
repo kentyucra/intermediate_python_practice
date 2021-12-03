@@ -351,3 +351,20 @@ str_1 is str_2 # True
 #### Membership Tests: Mutables are replaced by inmutables
 - When membership test such as `if e in [1, 2, 3]` are encountered, the `[1, 2, 3]` **constant**, is replaced by its inmutable counterpart `(1, 2, 3)` tuple
 - List are changed by tuples, and sets are changed by frozensets
+
+## Numeric Types
+- Four main types of numbers
+  - Boolean truth values `False`, `True` (bool python type)
+  - Integer Numbers `0, +-1, +-2, ...` (`int` python type)
+  - Rational Numbers `p/q where p,q belong Integer numbres and q != 0` ('fractions.Fraction` python type)
+  - Real Numbers `0, -1, 0.1256, 1/2, pi` (`float` and `decimal.Decimal` python type)
+  - Complex Numbers `{a + bi | a, b belongs Real numbers}` (`complex` python type) 
+# Integers
+- Integers does not have a limitation in the maximum number we can save in an object of the type `int`.
+- Working with bigger numbers make the operations take more time.
+- Integers support all the standard arithmetic operations: addition(`+`), subtraction(`-`), multiplication(`*`), division(`/`), exponents(`**`)
+- What is the resulting type of each operation?
+  - `int` (`+`, `-`, `*`, or `**`) `int` -> `int`
+  - `int / int` -> `float`
+- `//` is called **floor division**
+- `%` is called the **modulo** operator (mod)
